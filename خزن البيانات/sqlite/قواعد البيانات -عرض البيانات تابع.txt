@@ -1,0 +1,62 @@
+
+ public ArrayList getAllrecord(){//Â–« list view 
+
+        ArrayList array = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();//‰—Ìœ «·«‰ ‰ﬁ—«¡ „‰ ﬁ«⁄œÂ «·»Ì«‰« 
+        Cursor res = db.rawQuery("select * from mytable ",null);// *  ⁄‰Ì Ã„Ì⁄ ÕﬁÊ· «·ÃœÊ·
+        res.moveToFirst();//«–Â» ·«Ê· Õﬁ·
+        while (res.isAfterLast()==false){
+            String t1 = res.getString(res.getColumnIndex("id"));//ÌÃÌ» «· id
+            String t2 = res.getString(1);//ÌÃÌ» «·Õﬁ· «·«”„
+            String t3 = res.getString(2);
+            array.add(t1 + " - " + t2 + " : "+ t3);
+            res.moveToNext();//»⁄œ „« Ì”Õ» «·Õﬁ· «·«Ê· «–Â» «·Ï «·À«‰Ì
+
+        }
+
+        return  array;
+
+
+    }
+-------------------------------
+   Sqlite DB = new Sqlite(this);
+    EditText name;
+    EditText email;
+    ListView list;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        name=(EditText)findViewById(R.id.name);
+        email=(EditText)findViewById(R.id.email);
+        list=(ListView)findViewById(R.id.list);
+
+    }
+    public void B(View view) {
+        String Name = name.getText().toString();
+        String E_mail = email.getText().toString();
+      boolean result=  DB.insertdata(Name,E_mail);
+
+        if(result ==true){
+            Toast.makeText(Main2Activity.this,"Ok",Toast.LENGTH_SHORT).show();
+            name.setText("");
+            email.setText("");
+            show_data();
+        }
+        else{
+            Toast.makeText(Main2Activity.this,"No",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public  void  show_data(){
+        ArrayList<String> listdata = DB.getAllrecord();
+        ArrayAdapter Ad = new ArrayAdapter(this,android.R.layout.simple_list_item_1,listdata);
+        list.setAdapter(Ad);
+    }
+    public void BB(View view) {
+    }
+
+    public void BBB(View view) {
+    }

@@ -1,0 +1,34 @@
+
+EditText name,mail;
+    TextView textView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cal);
+        name=(EditText)findViewById(R.id.name);
+        mail=(EditText)findViewById(R.id.mail);
+        textView=(TextView)findViewById(R.id.text_Data);
+    }
+    public void save(View view) {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("DATA",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("name",name.getText().toString());
+     // sharedPreferences.edit().putString("name",name.getText().toString());
+        editor.putString("mail",mail.getText().toString());
+        editor.apply();
+        Toast.makeText(cal.this,"Succesfuly",Toast.LENGTH_LONG).show();
+    }
+    public void database(View view) {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("DATA",MODE_PRIVATE);
+        String name= sharedPreferences.getString("name","");
+         String mail=  sharedPreferences.getString("mail","");
+        if (name.equals("")||mail.equals("")){
+            Toast.makeText(cal.this,"Data not found",Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(cal.this,"Data  found",Toast.LENGTH_LONG).show();
+            textView.setText("name:"+name+"\n" +
+                    "mail:"+mail);
+        }
+
+    }

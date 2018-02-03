@@ -1,0 +1,51 @@
+
+public  boolean update(String id, String name, String email){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues con =new ContentValues();
+        con.put("name", name);
+        con.put("email" , email);
+        db.update("mytable",con,"id= ?",new String[]{id});//Ì „  ⁄œÌ· «·»Ì«‰«  Õ”» id
+        return  true;
+
+    }
+    public Integer Delete(String id){
+
+        SQLiteDatabase db =this.getWritableDatabase();
+        return  db.delete("mytable","id = ?",new  String[]{id});
+
+
+    }
+------------------------------------------------------------------------------------------
+  public void BB(View view) {
+        String Name = name.getText().toString();
+        String E_mail = email.getText().toString();
+        String id = ID.getText().toString();
+        boolean result = DB.update(id, Name, E_mail);
+
+        if (result == true) {
+            Toast.makeText(Main2Activity.this, "Ok", Toast.LENGTH_SHORT).show();
+            name.setText("");
+            email.setText("");
+            show_data();
+        } else {
+
+            Toast.makeText(Main2Activity.this, "No", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void BBB(View view) {
+
+        String id = ID.getText().toString();
+
+        int result=DB.Delete(id);
+        if(result >0){//«–« ﬂ«‰  «·‰ ÌÃÂ ’›— ·„  Õ–› «·»Ì«‰« 
+
+            Toast.makeText(Main2Activity.this,"OK",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(Main2Activity.this,"NO",Toast.LENGTH_SHORT).show();
+        }
+        name.setText("");
+        email.setText("");
+        show_data();
+    }

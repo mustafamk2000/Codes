@@ -1,0 +1,78 @@
+Sqlite DB = new Sqlite(this);
+    EditText name;
+    EditText email;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        name=(EditText)findViewById(R.id.name);
+        email=(EditText)findViewById(R.id.email);
+
+    }
+    public void B(View view) {
+        String Name = name.getText().toString();
+        String E_mail = email.getText().toString();
+      boolean result=  DB.insertdata(Name,E_mail);
+
+        if(result ==true){
+            Toast.makeText(Main2Activity.this,"Ok",Toast.LENGTH_SHORT).show();
+            name.setText("");
+            email.setText("");
+        }
+        else{
+
+            Toast.makeText(Main2Activity.this,"No",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void BB(View view) {
+    }
+
+    public void BBB(View view) {
+    }
+}
+
+------------------------------------------------------------------
+package com.example.ham.mk;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class Sqlite extends SQLiteOpenHelper {
+    public  static  final  String Dbname="data.db";
+
+    public Sqlite(Context context) {
+        super(context, Dbname, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("create table mytable ( id INTEGER PRIMARY KEY AUTOINCREMENT, name  Text , email TEXT)" );//id ÂÊ ⁄‰Ê«‰ «·ÃœÊ·  ÊÌ „ ›ÌÂ« «÷«›Â «—ﬁ«„  ·ﬁ«∆Ì« Ê€Ì— „ ﬂ——Â
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS mytable");//Â–« Ì÷„‰ «‰Ê  Â–Â «·ﬁ«⁄œÂ ›ÌÂ«  Â–« «·ÃœÊ·
+        onCreate(sqLiteDatabase);
+    }
+    public  boolean insertdata(String name , String email){
+
+        SQLiteDatabase db =this.getWritableDatabase();//Ì”„Õ »«·ﬂ «»Â
+        ContentValues con= new ContentValues();//«÷«›Â «·»Ì«‰« 
+        con.put("name",name);//«”„ «·Õﬁ· «·–Ì Ê÷⁄‰«Â „⁄ name Ì⁄‰Ì ‰÷Â name ›Ì Õﬁ· name
+        con.put("email",email);
+        long Result =db.insert("mytable",null,con);//«÷«›Â «·ÃœÊ· Ê«·»Ì«‰«  ›Ì ﬁÊ«⁄œ «·»Ì«‰« 
+
+        if(Result == -1)//«–« ·„ Ì „ «÷«›Â «·ÃœÊ· Ê«·»Ì«‰«  ›Ì ﬁÊ«⁄œ «·»Ì«‰«  —Ã⁄ Œÿ√
+            return  false;
+
+        else
+            return true;
+
+    }
+}

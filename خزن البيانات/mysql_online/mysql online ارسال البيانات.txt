@@ -1,0 +1,111 @@
+
+«·«‰œ—ÊÌœ :
+public  void  send_data_(View view){
+
+        String name = editText2.getText().toString();
+        String id = editText.getText().toString();
+
+        Response.Listener<String> rStringListener= new  Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean success = jsonObject.getBoolean("success");
+                        if (success){
+                        Toast.makeText(cal.this,"is send",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(cal.this,"is not send",Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        send_data send = new send_data(id,name,rStringListener);
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(send);
+
+
+
+    }
+--------------------------------------------------------------------------------------------
+package com.example.ham.myapplication;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.*;
+import java.util.Map;
+
+/**
+ * Created by H.A.M on 1/18/2018.
+ */
+
+public class send_data extends StringRequest {
+
+    private  static  final  String SEND_DATA = "https://mustafa2000676.000webhostapp.com/sent.php";
+    private java.util.Map<String,String> map;
+
+    public  send_data (String id, String name, Response.Listener<String> stringListener){
+        super(Method.POST,SEND_DATA,stringListener,null);//œ«·Â POST ·«—”«· «·»Ì«‰«  ⁄ﬂ” œ«·ÂGET
+        //Ê«Ì÷« ·«—”«· »Ì«‰«  »ﬂ„ÌÂ ﬂ»Ì—Â
+        map=new HashMap<>();
+        map.put("id",id);
+        map.put("name",name);
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return map;
+    }
+}
+------------------------------------------------------------
+php:
+
+
+<?php
+$servername = "localhost";
+$username = "id4303041_mustafa";
+$password = "mk3000";
+$dbname = "id4303041_mk";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+//===================================================================
+//==================================================================
+date_default_timezone_set("Asia/Muscat");
+$date=date("Y/m/d");//strip_tags(trim($_POST["date"]));
+$time=date("h:i:sa");//strip_tags(trim($_POST["time"]));
+//„„ﬂ‰ «÷«›Â «·Êﬁ  Ê«· «—ÌŒ ›Ì ﬁÊ«Âœ «·»Ì«‰«  
+$name=$_POST["name"];
+$id=$_POST["id"];
+
+$sql = "select * from users";
+$result_1 = mysqli_query($conn, $sql);
+$old_data=mysqli_num_rows($result_1);
+ mysqli_query($conn, "insert into users(id,name)values('$id','$name')");
+
+
+ $result_2 = mysqli_query($conn, $sql);
+ $new_data=mysqli_num_rows($result_2);
+
+
+if($new_data>$old_data){
+    $check["success"] = TRUE; 
+}
+else{
+    $check["success"]=FALSE;
+}
+echo json_encode($check);
+//===================================================================================
+//===================================================================================
+mysqli_close($conn);
+?>

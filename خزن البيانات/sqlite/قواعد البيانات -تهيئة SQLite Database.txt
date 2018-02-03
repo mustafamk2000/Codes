@@ -1,0 +1,28 @@
+package com.example.ham.mk;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class Sqlite extends SQLiteOpenHelper {
+    public  static  final  String Dbname="data.db";
+
+    public Sqlite(Context context) {
+        super(context, Dbname, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("create table mytable ( id INTEGER PRIMARY KEY AUTOINCREMENT, name  Text , email TEXT" );//id åæ ÚäæÇä ÇáÌÏæá  æíÊã İíåÇ ÇÖÇİå ÇÑŞÇã ÊáŞÇÆíÇ æÛíÑ ãÊßÑÑå
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS mytable");//åĞÇ íÖãä Çäæ  åĞå ÇáŞÇÚÏå İíåÇ  åĞÇ ÇáÌÏæá
+        onCreate(sqLiteDatabase);
+
+
+    }
+}
